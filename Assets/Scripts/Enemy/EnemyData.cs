@@ -10,6 +10,13 @@ public enum EnemyType // 헷갈리지 않게 타입 정의
     Sniper       // 저격병
 }
 
+public enum PatrolType // 패트롤 타입 정의
+{
+    None,   // 패트롤 안 함
+    Vertical,   // 상 하 패트롤
+    Horizontal  // 좌 우 패트롤
+}
+
 [CreateAssetMenu(fileName = "EnemyData", menuName = "Game/Enemy Data")] // SO 생성 메뉴 추가
 public class EnemyData : ScriptableObject
 {
@@ -28,8 +35,9 @@ public class EnemyData : ScriptableObject
     public float detectRange = 6f;     // 플레이어 감지 범위
     public float attackRange = 4f;   // 공격 범위
 
-    //[Header("Special")]
-    //public bool useLongRangeAttack; // 저격병만 true로 사용
-    //public float longRangeDamageMultiplier = 1.5f; // 저격 강화
+    [Header("패트롤 세팅")]
+    public PatrolType patrolType;
+    public float patrolDistance = 4f;  // 왕복 거리
+    public float patrolSpeed = 1f;   // 순찰 속도 (인식 했을 때보다 느리게)
 }
 
