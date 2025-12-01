@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyType: 0
   enemySprite: {fileID: 21300000, guid: 83c760f237219fb4db6706ec44b94f65, type: 3}
   maxHP: 50
-  moveSpeed: 1
+  moveSpeed: 2.5
   attackDamage: 10
   attackRate: 1
-  detectRange: 6
+  detectRange: 10
   attackRange: 2

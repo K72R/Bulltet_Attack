@@ -35,11 +35,11 @@ public class EnemyController : MonoBehaviour
         attackCooldown -= Time.deltaTime;
     }
 
-    private void MoveToPlayer()
-    {
-        Vector3 dir = (player.position - transform.position).normalized;
-        transform.position += dir * enemy.data.moveSpeed * Time.deltaTime;
-    }
+    //private void MoveToPlayer()
+    //{
+    //    Vector3 dir = (player.position - transform.position).normalized;
+    //    transform.position += dir * enemy.data.moveSpeed * Time.deltaTime;
+    //}
 
     private void TryAttack()
     {
@@ -52,5 +52,24 @@ public class EnemyController : MonoBehaviour
         // TODO: 플레이어에게 데미지 주기
 
         attackCooldown = enemy.data.attackRate;
+    }
+
+    private void MoveToPlayer()
+    {
+        Vector3 dir = (player.position - transform.position).normalized;
+
+        // 이동
+        transform.position += dir * enemy.data.moveSpeed * Time.deltaTime;
+
+        // 회전
+        RotateTowardsDirection(dir);
+    }
+
+    private void RotateTowardsDirection(Vector3 dir)
+    {
+        // 기본 바라보는 방향이 "위쪽"이기 때문에 Atan2 인자를 반대로 넣어야 함
+        float angle = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+
+        transform.rotation = Quaternion.Euler(0, 0, -angle);
     }
 }
