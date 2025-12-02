@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Rendering.Universal;
 using UnityEngine;
 
 // 플레이어가 근처에서 상호작용(F키)을 눌러
@@ -30,6 +31,9 @@ public class InteractableDoor : MonoBehaviour
     [Tooltip("상호작용에 사용할 키 (기본: E)")]
     [SerializeField] private KeyCode interactKey = KeyCode.E;
 
+    [Header("라이트/시야 설정")]
+    [SerializeField] private ShadowCaster2D shadowCaster; // 문이 라이트를 막는 컴포넌트
+
     private SpriteRenderer spriteRenderer; // 문 그림을 바꾸기 위한 렌더러
     private bool isOpen = false;           // 현재 문이 열려 있는지 여부
 
@@ -39,7 +43,7 @@ public class InteractableDoor : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // doorCollider를 인스펙터에서 지정 안 했으면, 자신 것 자동 할당
+        // doorCollider를 인스펙터에서 지정 안 했으면 자신 것 자동 할당
         if (doorCollider == null)
         {
             doorCollider = GetComponent<BoxCollider2D>();
@@ -84,8 +88,8 @@ public class InteractableDoor : MonoBehaviour
     }
 
     // 실제로 문 상태를 변경하는 함수.
-    // - isOpen == true  → 문 열림 (콜라이더 OFF, 열린 스프라이트)
-    // - isOpen == false → 문 닫힘 (콜라이더 ON, 닫힌 스프라이트)
+    // isOpen == true  → 문 열림 (콜라이더 OFF, 열린 스프라이트)
+    // isOpen == false → 문 닫힘 (콜라이더 ON, 닫힌 스프라이트)
     private void SetDoorState(bool open)
     {
         isOpen = open;
@@ -94,6 +98,11 @@ public class InteractableDoor : MonoBehaviour
         if (doorCollider != null)
         {
             doorCollider.enabled = !isOpen;
+        }
+
+        if (shadowCaster != null)
+        {
+            shadowCaster.enabled = !isOpen;  // 닫힘: true(막음) / 열림: false(안 막음)
         }
 
         // 문 그림 변경
