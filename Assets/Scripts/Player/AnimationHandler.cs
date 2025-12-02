@@ -28,4 +28,9 @@ public class AnimationHandler : MonoBehaviour
     {
         animator.SetTrigger("Attack");
     }
+
+    public void Reload()
+    {
+        animator.SetTrigger("Reload");
+    }
 }

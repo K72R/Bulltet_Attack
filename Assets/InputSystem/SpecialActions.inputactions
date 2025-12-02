@@ -1,0 +1,75 @@
+{
+    "version": 1,
+    "name": "SpecialActions",
+    "maps": [
+        {
+            "name": "SpecialAction",
+            "id": "ecff2d7b-b0db-4df5-86c7-ea7e6fed105b",
+            "actions": [
+                {
+                    "name": "ChangeHand",
+                    "type": "Button",
+                    "id": "f83551ed-f84e-4fba-b270-2c9f76707819",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "c5130e82-87f1-4af6-8804-71956b6bc4e9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Reload",
+                    "type": "Button",
+                    "id": "c04475fb-062e-4e30-ae35-1447af9e6271",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "324f8d5c-34fc-4d0f-911f-ff28ed7b2f0c",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeHand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f8db79fa-af57-41a8-af52-e8b0d4373ed5",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c0a78b61-bce2-468a-90e2-d9c9368de28d",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
