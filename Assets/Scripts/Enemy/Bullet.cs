@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private Player player;
+    private PlayerStats playerStat;
 
     private Vector3 direction;
     private float speed;
@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            player.stats.currentHealth -= (int)damage;
+            playerStat.currentHealth -= (int)damage;
             Debug.Log($"Player hit! Damage: {damage}");
             Destroy(gameObject);
         }
