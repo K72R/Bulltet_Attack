@@ -9,6 +9,7 @@ public class Aiming : MonoBehaviour
     [Header("Aiming Settings")]
     private Transform firePosition;
     private LineRenderer aimingLine;
+    private float damage;
 
     public float objAndRayOffset;
     public float rayLength;
@@ -44,7 +45,15 @@ public class Aiming : MonoBehaviour
 
         if (hit.collider != null)
         {
-            Debug.Log($"Hit : {hit.collider.name}");
+            if(hit.collider.TryGetComponent<Enemy>(out Enemy enemyStats))
+            {
+                enemyStats.TakeDamage(damage);
+                Debug.Log("Hit Enemy");
+            }
+            else
+            {
+                Debug.Log("Hit Something Else");
+            }
         }
         else
         {

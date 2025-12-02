@@ -31,13 +31,20 @@ public class EnemyData : ScriptableObject
     public float attackDamage = 10f; // 공격력
     public float attackRate = 1f; // 공격 속도 (초당 공격 횟수)
 
-    [Header("인식범위 및 공격사거리")]
-    public float detectRange = 6f;     // 플레이어 감지 범위
-    public float attackRange = 4f;   // 공격 범위
+    [Header("시야범위 및 공격사거리")]
+    public float viewAngle = 90f;  // 시야각
+    public float detectRange = 6f; // 플레이어 감지 범위
+    public LayerMask obstacleMask; // 장애물 체크용 마스크
+    public float attackRange = 4f; // 공격 범위
 
     [Header("패트롤 세팅")]
     public PatrolType patrolType;
     public float patrolDistance = 4f;  // 왕복 거리
     public float patrolSpeed = 1f;   // 순찰 속도 (인식 했을 때보다 느리게)
+
+   // [Header("총알 세팅")]
+    //public float bulletSpeed = 10f; // 총알 속도
+    //public Sprite bulletSprite; // 총알 이미지
+    //public GameObject bulletPrefab; // 총알 프리팹
 }
 
