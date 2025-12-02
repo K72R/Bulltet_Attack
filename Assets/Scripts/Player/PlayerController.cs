@@ -1,27 +1,32 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Player Settings")]
+    private SpriteRenderer spriteRenderer; // 플레이어 스프라이트 렌더러
+    private bool isLeftHanded = false; // 플레이어가 무기를 어느 손에 들고 있는지 여부
+    private Transform firePosition;
+
     [Header("Movement Settings")]
-    public float moveSpeed;
-    private Rigidbody2D rb;
-    private Vector2 curMovementInput;
+    public float moveSpeed; // 이동 속도
+    private Rigidbody2D rb; // 플레이어 리지드바디
+    private Vector2 curMovementInput; // 현재 이동 입력 벡터 (W,A,S,D 입력)
 
     [Header("Look Settings")]
-    public Vector2 mouseDelta;
+    public Vector3 mouseDelta; // 현재 마우스 커서의 위치값
+
+    [Header("Combat Settings")]
+    private Aiming aiming;
 
     [Header("AnimationControll")]
-    private AnimationHandler animationHandler;
+    private AnimationHandler animationHandler; // 애니메이션 핸들러
 
     [Header("PlayerPosition")]
-    public Vector2 playerPosition;
+    public Vector2 playerPosition; // 플레이어의 실시간 위치
 
-    private Camera cam;
+    private Camera cam; // 마우스 커서의 좌표를 얻기 위한 카메라 참조
 
     private void Awake()
     {
@@ -31,9 +36,20 @@ public class PlayerController : MonoBehaviour
         cam = Camera.main;
     }
 
+    private void Start()
+    {
+        firePosition = this.transform.Find("PlayerObj/FirePosition");
+        aiming = firePosition.GetComponent<Aiming>();
+        // 자식 오브젝트의 스프라이트 렌더러 컴포넌트 가져오기
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer.flipY = isLeftHanded;
+        Cursor.visible = false;
+    }
     private void Update()
     {
-        playerPosition = this.transform.position;
+        IsChangeHand();
+        // 매 프레임마다 플레이어의 위치 업데이트
+        playerPosition = transform.GetChild(0).position;
         GetInput();
         PlayerRotate();
         HandleCombatInput();
@@ -64,6 +80,7 @@ public class PlayerController : MonoBehaviour
         {
             animationHandler.Shoot();
             Debug.Log("공격");
+            aiming.Attack();
         }
     }
 
@@ -72,10 +89,17 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void PlayerRotate()
     {
-        Vector2 lookDir = mouseDelta - rb.position;
-        float angle = Mathf.Atan2(lookDir.y , lookDir.x ) * Mathf.Rad2Deg - 90f;
+        float spriteBaseOffset = -90f;
+        Vector2 lookDir = ((Vector2)mouseDelta - playerPosition);
 
-        rb.rotation = angle;
+        if (lookDir.magnitude < 0.9f)
+        {
+            lookDir = Vector2.zero;
+        }
+
+        float angle = Mathf.Atan2(lookDir.y , lookDir.x ) * Mathf.Rad2Deg;
+
+        rb.rotation = angle + spriteBaseOffset;
     }
 
     /// <summary>
@@ -85,6 +109,25 @@ public class PlayerController : MonoBehaviour
     {
         curMovementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
 
-        mouseDelta = cam.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mouseScreen = Input.mousePosition;
+        mouseScreen.z = Mathf.Abs(cam.transform.position.z);
+
+        mouseDelta = cam.ScreenToWorldPoint(mouseScreen);
+    }
+
+    private void IsChangeHand()
+    {
+        if (spriteRenderer == null) return;
+
+        spriteRenderer.flipY = isLeftHanded;
+        firePosition.localPosition = new Vector3(firePosition.localPosition.x, isLeftHanded ? 0.53f : -0.53f, firePosition.localPosition.z);
+    }
+
+    /// <summary>
+    /// 손 바꾸기 커맨드 입력시 호출
+    /// </summary>
+    public void HandChangeButtonOnPress()
+    {
+        isLeftHanded = !isLeftHanded;
     }
 }

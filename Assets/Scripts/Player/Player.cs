@@ -15,4 +15,17 @@ public class Player : MonoBehaviour
         controller = GetComponent<PlayerController>();
         stats = GetComponent<PlayerStats>();
     }
+
+    private void LateUpdate()
+    {
+        if(stats.playerStatus == PlayerStatus.Dead)
+        {
+            PlayerIsDie();
+        }
+    }
+
+    private void PlayerIsDie()
+    {
+        Destroy(this.gameObject);
+    }
 }
