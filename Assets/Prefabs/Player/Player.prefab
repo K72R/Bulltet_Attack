@@ -5273,7 +5273,7 @@ MonoBehaviour:
   m_ShadowIntensityEnabled: 1
   m_ShadowIntensity: 1
   m_ShadowVolumeIntensityEnabled: 1
-  m_ShadowVolumeIntensity: 0.514
+  m_ShadowVolumeIntensity: 1
   m_LocalBounds:
     m_Center: {x: 0, y: -0.00000011920929, z: 0}
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
@@ -5305,6 +5305,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spotLight: {fileID: 1120325895978231569}
   targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  obstacleMask:
     serializedVersion: 2
     m_Bits: 64
 --- !u!120 &7780878060012359445

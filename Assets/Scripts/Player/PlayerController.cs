@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
         float spriteBaseOffset = -90f;
         Vector2 lookDir = ((Vector2)mouseDelta - playerPosition);
 
-        if (lookDir.magnitude < 2.0f)
+        if (lookDir.magnitude < 0.8f)
         {
             return;
         }
