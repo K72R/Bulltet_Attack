@@ -2,53 +2,57 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using System.Collections.Generic;
 
-public class LightDetector2D : MonoBehaviour
+public class SpotLightOcclusion : MonoBehaviour
 {
-    public Light2D spotLight;  // Spot Light 2D 할당
-    public LayerMask targetMask;
-
-    private List<SpriteRenderer> detected = new List<SpriteRenderer>();
+    public Light2D spotLight;
+    public LayerMask targetMask;     // Enemy 등 감지 대상
+    public LayerMask obstacleMask;   // 벽/바위 같은 장애물
 
     void Update()
     {
-        foreach(var c in detected)
-        {
-            c.enabled = false; // 끄기
-        }
-
         DetectObjects();
     }
 
-    private void DetectObjects()
+    void DetectObjects()
     {
-        detected.Clear();
-
         float radius = spotLight.pointLightOuterRadius;
+        float halfAngle = spotLight.pointLightOuterAngle * 0.5f;
+        Vector2 forward = transform.up; // SpotLight2D의 방향
 
-        // 반경 안의 모든 콜라이더 가져오기
+        // 반경 체크
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, targetMask);
 
         foreach (var hit in hits)
         {
             Transform obj = hit.transform;
+            SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
 
+            if (sr == null)
+                continue;
+
+            // 1) SpotLight 방향각 체크
             Vector2 dir = (obj.position - transform.position).normalized;
-            Vector2 forward = transform.up; // SpotLight2D는 Up 방향이 빛 방향
-
             float angle = Vector2.Angle(forward, dir);
 
-            // 스포트라이트의 각도
-            float halfAngle = spotLight.pointLightOuterAngle * 0.5f;
-
-            if (angle <= halfAngle)
+            if (angle > halfAngle)
             {
-                // 빛에 닿은 것으로 처리
-                SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-                if (sr != null)
-                {
-                    sr.enabled = true; // 켜주기
-                    detected.Add(sr);
-                }
+                sr.enabled = false;
+                continue;
+            }
+
+            // 2) 장애물 체크 (SpotLight → Target)
+            RaycastHit2D block = Physics2D.Raycast(transform.position, dir,
+                Vector2.Distance(transform.position, obj.position), obstacleMask);
+
+            if (block.collider != null)
+            {
+                // 장애물에 막힘 → 빛이 닿지 않음
+                sr.enabled = false;
+            }
+            else
+            {
+                // 빛이 직접 닿음 → 켜기
+                sr.enabled = true;
             }
         }
     }

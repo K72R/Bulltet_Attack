@@ -1,0 +1,16 @@
+weapon[0,0] = "SKS";
+weapon[0,1] =  "Rifle";
+weapon[0,2] = "SA";
+weapon[0,3] = 12; //attack speed
+weapon[0,4] = 1.5; //accuracy
+weapon[0,5] = 40; //damage
+weapon[0,6] = choose(0,1,2) //attachment
+weapon[0,7] = 10 //mag ammo
+weapon[0,8] = 10 //mag ammo
+weapon[0,9] = 40 //mag ammo
+weapon[0,10] = sound_weapon_sks_shoot;
+weapon[0,11] = sound_weapon_sks_reload;
+weapon[0,12] = spr_top_weapon_rif;
+weapon[0,13] = spr_w_sks;
+weapon[0,14] = 0;
+weapon[0,15] = 0;
