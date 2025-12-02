@@ -3,39 +3,21 @@ using UnityEngine.UI;
 
 public class PlayerHPBar : MonoBehaviour
 {
-    public float curValue;
-    public float maxValue;
-    public float startValue;
     public Image uiBar;
+
+    private PlayerStats playerStats;
 
     private void Start()
     {
-        curValue = startValue;
-        UpdateUI();
+        // PlayerStats 찾아오기
+        playerStats = FindObjectOfType<PlayerStats>();
     }
 
-
-    public void Add(float amount)
+    private void Update()
     {
-        curValue = Mathf.Min(curValue + amount, maxValue);
-        UpdateUI();
-    }
-
-    public void Subtract(float amount)
-    {
-        curValue = Mathf.Max(curValue - amount, 0.0f);
-        UpdateUI();
-    }
-
-    public void SetHealth(float value)
-    {
-        curValue = Mathf.Clamp(value, 0, maxValue);
-        UpdateUI();
-    }
-
-    private void UpdateUI()
-    {
-        if (uiBar != null)
-            uiBar.fillAmount = curValue / maxValue;
+        if (playerStats != null)
+        {
+            uiBar.fillAmount = playerStats.GetHealthPercent();
+        }
     }
 }
