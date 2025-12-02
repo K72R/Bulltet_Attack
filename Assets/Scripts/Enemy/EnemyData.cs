@@ -42,9 +42,9 @@ public class EnemyData : ScriptableObject
     public float patrolDistance = 4f;  // 왕복 거리
     public float patrolSpeed = 1f;   // 순찰 속도 (인식 했을 때보다 느리게)
 
-   // [Header("총알 세팅")]
-    //public float bulletSpeed = 10f; // 총알 속도
-    //public Sprite bulletSprite; // 총알 이미지
-    //public GameObject bulletPrefab; // 총알 프리팹
+    [Header("총알 세팅")]
+    public float bulletSpeed = 10f; // 총알 속도
+    public Sprite bulletSprite; // 총알 이미지
+    public GameObject bulletPrefab; // 총알 프리팹
 }
 

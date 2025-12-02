@@ -63,7 +63,7 @@ public class EnemyController : MonoBehaviour
 
         Vector3 bulletDir = (player.position - transform.position).normalized;
 
-        //FireBullet(bulletDir);
+        FireBullet(bulletDir);
 
         // TODO: 플레이어에게 데미지 주기
 
@@ -113,23 +113,23 @@ public class EnemyController : MonoBehaviour
 
     private bool CanSeePlayer() // 플레이어 인식 함수
     {
-        Vector3 dirToPlayer = (player.position - transform.position).normalized;
+        Vector3 dirToPlayer = (player.position - transform.position).normalized; // 플레이어 방향 계산
 
 
-        if (Vector3.Distance(transform.position, player.position) > enemy.data.detectRange)
+        if (Vector3.Distance(transform.position, player.position) > enemy.data.detectRange) // 인식 범위 밖이면 false 반환
             return false;
 
 
-        float angle = Vector3.Angle(transform.up, dirToPlayer);
-        if (angle > enemy.data.viewAngle * 0.5f)
+        float angle = Vector3.Angle(transform.up, dirToPlayer); // 적의 현재 방향과 플레이어 방향 사이의 각도 계산
+        if (angle > enemy.data.viewAngle * 0.5f) // 시야각 밖이면 false 반환
             return false;
 
 
-        if (enemy.data.obstacleMask != 0)
+        if (enemy.data.obstacleMask != 0) // 장애물 마스크가 설정되어 있을 경우에만 레이캐스트 검사
         {
-            if (Physics.Raycast(transform.position, dirToPlayer, out RaycastHit hit, enemy.data.detectRange, enemy.data.obstacleMask))
+            if (Physics.Raycast(transform.position, dirToPlayer, out RaycastHit hit, enemy.data.detectRange, enemy.data.obstacleMask)) // 장애물 마스크로 레이캐스트 검사
             {
-                if (!hit.collider.CompareTag("Player"))
+                if (!hit.collider.CompareTag("Player")) // 레이캐스트에 맞은 것이 플레이어가 아니면 false 반환
                     return false;
             }
         }
@@ -137,7 +137,7 @@ public class EnemyController : MonoBehaviour
         return true;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected() // 시야각 디버그 그리기
     {
         if (enemy == null || enemy.data == null) return;
 
@@ -165,22 +165,17 @@ public class EnemyController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
-    //private void FireBullet(Vector3 dir)
-    //{
-    //    if (enemy.data.bulletPrefab == null)
-    //    {
-    //        Debug.LogWarning("EnemyData에 bulletPrefab이 설정되어 있지 않습니다!");
-    //        return;
-    //    }
+    private void FireBullet(Vector3 dir) // 총알 발사 함수
+    {
+        if (enemy.data.bulletPrefab == null)
+        {
+            Debug.LogWarning("인스펙터 연결하라고 제발 plz.....");
+            return;
+        }
 
-    //    GameObject bulletObj = Instantiate(enemy.data.bulletPrefab, transform.position, Quaternion.identity);
-    //    Bullet bullet = bulletObj.GetComponent<Bullet>();
+        GameObject bulletObj = Instantiate(enemy.data.bulletPrefab, transform.position, Quaternion.identity);
+        Bullet bullet = bulletObj.GetComponent<Bullet>();
 
-    //    bullet.Initialize(
-    //        dir,
-    //        enemy.data.bulletSpeed,
-    //        enemy.data.attackDamage,   // 총알이 줄 데미지
-    //        enemy.data.bulletSprite
-    //    );
-    //}
+        bullet.Initialize(dir, enemy.data.bulletSpeed, enemy.data.attackDamage, enemy.data.bulletSprite); // 총알 초기화
+    }
 }
