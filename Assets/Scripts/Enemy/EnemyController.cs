@@ -63,7 +63,7 @@ public class EnemyController : MonoBehaviour
 
         Vector3 bulletDir = (player.position - transform.position).normalized;
 
-        FireBullet(bulletDir);
+        //FireBullet(bulletDir);
 
         // TODO: 플레이어에게 데미지 주기
 
@@ -165,22 +165,22 @@ public class EnemyController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
-    private void FireBullet(Vector3 dir)
-    {
-        if (enemy.data.bulletPrefab == null)
-        {
-            Debug.LogWarning("EnemyData에 bulletPrefab이 설정되어 있지 않습니다!");
-            return;
-        }
+    //private void FireBullet(Vector3 dir)
+    //{
+    //    if (enemy.data.bulletPrefab == null)
+    //    {
+    //        Debug.LogWarning("EnemyData에 bulletPrefab이 설정되어 있지 않습니다!");
+    //        return;
+    //    }
 
-        GameObject bulletObj = Instantiate(enemy.data.bulletPrefab, transform.position, Quaternion.identity);
-        Bullet bullet = bulletObj.GetComponent<Bullet>();
+    //    GameObject bulletObj = Instantiate(enemy.data.bulletPrefab, transform.position, Quaternion.identity);
+    //    Bullet bullet = bulletObj.GetComponent<Bullet>();
 
-        bullet.Initialize(
-            dir,
-            enemy.data.bulletSpeed,
-            enemy.data.attackDamage,   // 총알이 줄 데미지
-            enemy.data.bulletSprite
-        );
-    }
+    //    bullet.Initialize(
+    //        dir,
+    //        enemy.data.bulletSpeed,
+    //        enemy.data.attackDamage,   // 총알이 줄 데미지
+    //        enemy.data.bulletSprite
+    //    );
+    //}
 }
