@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 플레이어가 몸으로 밀어서 움직일 수 있는 엄폐물.
-// - Rigidbody2D 물리에 의해 움직임
-// - 필요하면 X 또는 Y 축으로만 움직이게 제한 가능
+// 리지드바디 물리에 의해 움직임
+// 필요하면 X 또는 Y 축으로만 움직이게 제한 가능
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class PushableCover : MonoBehaviour
@@ -24,7 +24,7 @@ public class PushableCover : MonoBehaviour
 
     private void Awake()
     {
-        // 이 상자에 붙어 있는 Rigidbody2D를 찾아서 보관
+        // 이 상자에 붙어 있는 리지드바디를 찾아서 보관
         rb = GetComponent<Rigidbody2D>();
 
         // 탑뷰 상자라서 넘어지거나 회전하지 않게 고정
@@ -41,7 +41,7 @@ public class PushableCover : MonoBehaviour
         // 현재 상자의 속도를 가져옴
         Vector2 v = rb.velocity;
 
-        // lockX가 켜져 있으면 X축 속도를 0으로 만들어 가로 이동을 막음
+        // lockX가 켜져 있으면 X축 속도를 0으로 만들어 가로이동을 막음
         if (lockX)
         {
             v.x = 0f;

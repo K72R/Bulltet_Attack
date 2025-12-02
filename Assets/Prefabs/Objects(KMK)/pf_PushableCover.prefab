@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -1227855347087925424}
   - component: {fileID: 4756343301251256491}
   - component: {fileID: 4766549716130988792}
-  m_Layer: 23
+  m_Layer: 6
   m_Name: pf_PushableCover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,10 +100,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 5
-  m_LinearDrag: 3
-  m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_Mass: 20
+  m_LinearDrag: 8
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -201,7 +201,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: -11820
+  m_InstanceId: -69840
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
