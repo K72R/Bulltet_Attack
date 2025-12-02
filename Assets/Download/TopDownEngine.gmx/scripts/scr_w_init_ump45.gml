@@ -1,0 +1,16 @@
+weapon[0,0] = "UMP45";
+weapon[0,1] =  "SMG";
+weapon[0,2] = "A";
+weapon[0,3] = 6; //attack speed
+weapon[0,4] = 5; //accuracy
+weapon[0,5] = 28; //damage
+weapon[0,6] = choose(0,1,2) //attachment
+weapon[0,7] = 25 //mag ammo
+weapon[0,8] = 25 //mag ammo
+weapon[0,9] = 100 //mag ammo
+weapon[0,10] = sound_weapon_ump45_shoot;
+weapon[0,11] = sound_weapon_ump45_reload;
+weapon[0,12] = spr_top_weapon_mp;
+weapon[0,13] = spr_w_ump45;
+weapon[0,14] = 0;
+weapon[0,15] = 0;
