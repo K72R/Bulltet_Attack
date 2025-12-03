@@ -17,6 +17,13 @@ public class ParticleSystemHandler : MonoBehaviour
 
     public void FireEffectsOn()
     {
+        if (muzzleFlashEffect == null) return;
+
         muzzleFlashEffect?.Play();
+    }
+
+    public void EffectReset(Transform newFirePosition)
+    {
+        muzzleFlashEffect = newFirePosition.GetComponentInChildren<ParticleSystem>();
     }
 }
