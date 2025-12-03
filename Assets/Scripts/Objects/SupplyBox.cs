@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 플레이어가 상자 근처에서 F키를 눌러
-// 탄약을 보급받을 수 있는 보급 상자.
-// 한 번만 사용되게 할 수도 있고,
-// 여러 번 재사용 가능하게 설정할 수도 있음.
+// 플레이어가 상자 근처에서 E키를 눌러
+// 탄약을 보급받을 수 있는 보급 상자
+// 한 번만 사용되게 할 수도 있고
+// 여러 번 재사용 가능하게 설정할 수도 있음
 public class SupplyBox : MonoBehaviour
 {
     [Header("상자 시각 설정")]
