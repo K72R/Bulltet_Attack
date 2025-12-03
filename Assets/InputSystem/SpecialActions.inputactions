@@ -16,18 +16,36 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "Reload",
                     "type": "Button",
-                    "id": "c5130e82-87f1-4af6-8804-71956b6bc4e9",
+                    "id": "c04475fb-062e-4e30-ae35-1447af9e6271",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Reload",
+                    "name": "Pistol",
                     "type": "Button",
-                    "id": "c04475fb-062e-4e30-ae35-1447af9e6271",
+                    "id": "61adda2a-815d-423f-940b-a9f705e1d23f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Rifle",
+                    "type": "Button",
+                    "id": "240671cb-669c-4490-a7cb-9d724682bbce",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shotgun",
+                    "type": "Button",
+                    "id": "c03d1438-2c0c-4b21-8a70-80a7bc6b2cfc",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -48,23 +66,45 @@
                 },
                 {
                     "name": "",
-                    "id": "f8db79fa-af57-41a8-af52-e8b0d4373ed5",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c0a78b61-bce2-468a-90e2-d9c9368de28d",
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e2f4c0f-2d89-41e9-9332-f307599f08a4",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pistol",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "40173424-fcb4-4889-87c5-7f244e1ce070",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rifle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3d24f5e-f19f-4570-a499-3bc07f17d871",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shotgun",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

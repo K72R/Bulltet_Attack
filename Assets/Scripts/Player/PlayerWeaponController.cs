@@ -42,36 +42,50 @@ public class PlayerWeaponController : MonoBehaviour
         currentWeapon = WeaponType.Pistol;
     }
 
-    private void Update()
-    {
-        HandleWeaponSelectInput();
-    }
-
     // 무기 선택 입력
     // 지금은 Debug.Log로만 어떤 무기가 선택됐는지 확인하는 용도
     // 총/모션을 바꾸는건 다른 스크립트에서 처리해야함
     // currentWeapon 값을 보고 처리하면 됨
-    private void HandleWeaponSelectInput()
+    public void HandleWeaponSelectInput(WeaponType type)
     {
-        // 1번: 권총 (기본 무기, 항상 사용 가능)
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            currentWeapon = WeaponType.Pistol;
-            Debug.Log("무기 변경: 권총");
-        }
+        if (type == currentWeapon) return;
 
-        // 2번: 라이플 (해금됐을 때만 선택 가능)
-        if (Input.GetKeyDown(KeyCode.Alpha2) && hasRifle)
+        switch(type)
         {
-            currentWeapon = WeaponType.Rifle;
-            Debug.Log("무기 변경: 라이플");
+            case WeaponType.Pistol:
+                currentWeapon = WeaponType.Pistol;
+                break;
+            case WeaponType.Rifle:
+                currentWeapon = WeaponType.Rifle;
+                break;
+            case WeaponType.Shotgun:
+                currentWeapon = WeaponType.Shotgun;
+                break;
         }
+        //// 1번: 권총 (기본 무기, 항상 사용 가능)
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    
+        //    Debug.Log("무기 변경: 권총");
+        //}
 
-        // 3번: 샷건 (해금됐을 때만 선택 가능)
-        if (Input.GetKeyDown(KeyCode.Alpha3) && hasShotgun)
-        {
-            currentWeapon = WeaponType.Shotgun;
-            Debug.Log("무기 변경: 샷건");
-        }
+        //// 2번: 라이플 (해금됐을 때만 선택 가능)
+        //if (Input.GetKeyDown(KeyCode.Alpha2) && hasRifle)
+        //{
+        //    
+        //    Debug.Log("무기 변경: 라이플");
+        //}
+
+        //// 3번: 샷건 (해금됐을 때만 선택 가능)
+        //if (Input.GetKeyDown(KeyCode.Alpha3) && hasShotgun)
+        //{
+        //    
+        //    Debug.Log("무기 변경: 샷건");
+        //}
+
+        PlayerController controller = GetComponent<PlayerController>();
+        controller.SendNewSkin(currentWeapon);
     }
+
+
 }
