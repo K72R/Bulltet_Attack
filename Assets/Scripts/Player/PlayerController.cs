@@ -12,11 +12,16 @@ public enum IsAttackable
 public class PlayerController : MonoBehaviour
 {
     private const float ROTATION_HANDS_OFFSET = 0.53f;
+    private const int HANDED_PISTOL = 0;
+    private const int HANDED_RIFLE = 1;
+    private const int HANDED_SHOTGUN = 2;
 
     [Header("Player Settings")]
     private SpriteRenderer spriteRenderer; // 플레이어 스프라이트 렌더러
     private bool isLeftHanded = false; // 플레이어가 무기를 어느 손에 들고 있는지 여부
     private Transform firePosition;
+    private PlayerWeaponController weapon;
+    public GameObject[] playerSkins;
 
     [Header("Movement Settings")]
     public float moveSpeed; // 이동 속도
@@ -39,13 +44,20 @@ public class PlayerController : MonoBehaviour
 
     private Camera cam; // 마우스 커서의 좌표를 얻기 위한 카메라 참조
 
+    private PlayerAmmo playerAmmo;
+    private PlayerWeaponController weaponController;
+
     private void Awake()
     {
         playerPosition = Vector2.zero;
         animationHandler = GetComponent<AnimationHandler>();
+        weapon = GetComponent<PlayerWeaponController>();
         rb = GetComponent<Rigidbody2D>();
         cam = Camera.main;
         particleSystemHandler = GetComponent<ParticleSystemHandler>();
+
+        playerAmmo = GetComponent<PlayerAmmo>();
+        weaponController = GetComponent<PlayerWeaponController>();
     }
 
     private void Start()
@@ -90,13 +102,37 @@ public class PlayerController : MonoBehaviour
     private void HandleCombatInput()
     {
         if(Input.GetMouseButtonDown(0))
-        {
-            if (isAttackable == IsAttackable.Reloading) return; // 재장전 중이면 공격 불가;
+    {
+            if (isAttackable == IsAttackable.Reloading) return;
 
-            particleSystemHandler.FireEffectsOn(); // 총구 화염 효과 재생
-            animationHandler.Shoot(); // 공격 애니메이션 재생
-            aiming.Attack(); // 공격된 오브젝트 피격처리
+            //탄약 시스템 연결 구간
+            WeaponType currentWeapon = weaponController.currentWeapon;
+
+            // 권총은 무한탄 
+            if (currentWeapon != WeaponType.Pistol)
+            {
+                // 라이플/샷건은 탄약 필요
+                if (!playerAmmo.ConsumeFromMag(currentWeapon.ToString()))
+                {
+                    Debug.Log("R 눌러서 재장전");
+                    return;
+                }
+            }
+
+            // ---- 기존 발사 처리 ----
+            particleSystemHandler.FireEffectsOn();
+            animationHandler.Shoot();
+            aiming.Attack();
         }
+
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    if (isAttackable == IsAttackable.Reloading) return; // 재장전 중이면 공격 불가;
+
+        //    particleSystemHandler.FireEffectsOn(); // 총구 화염 효과 재생
+        //    animationHandler.Shoot(); // 공격 애니메이션 재생
+        //    aiming.Attack(); // 공격된 오브젝트 피격처리
+        //}
     }
 
     /// <summary>
@@ -156,7 +192,79 @@ public class PlayerController : MonoBehaviour
 
     public void ReloadComplete()
     {
+
+        WeaponType currentWeapon = weaponController.currentWeapon;
+
+        if (currentWeapon != WeaponType.Pistol)
+        {
+            playerAmmo.Reload(currentWeapon.ToString());
+        }
+
         Debug.Log("재장전 완료");
         isAttackable = IsAttackable.Ready;
+    }
+
+    public void SendNewSkin(WeaponType type)
+    {
+        switch(type)
+        {
+            case WeaponType.Pistol:
+                ReplaceSkin(playerSkins[HANDED_PISTOL]);
+                break;
+            case WeaponType.Rifle:
+                ReplaceSkin(playerSkins[HANDED_RIFLE]);
+                break;
+            case WeaponType.Shotgun:
+                ReplaceSkin(playerSkins[HANDED_SHOTGUN]);
+                break;
+        }
+    }
+
+    private void ReplaceSkin(GameObject newSkinPrefab)
+    {
+        GameObject newSkin = Instantiate(newSkinPrefab, transform);
+        newSkin.name = "PlayerObj";
+
+        // 2) 참조를 새 PlayerObj 기준으로 먼저 갱신!
+        RefreshPlayerChildReferences(newSkin.transform);
+
+        // 3) 마지막에 기존 스킨 삭제
+        Transform oldSkin = transform.Find("PlayerObj (old)"); // 이렇게 하면 안전
+                                                               // 또는 Destroy 전에 이름을 바꿔두기
+
+        // 만약 이름 변경이 번거로우면:
+        foreach (Transform child in transform)
+        {
+            if (child != newSkin.transform)
+                Destroy(child.gameObject);
+        }
+    }
+
+    private void RefreshPlayerChildReferences(Transform newObj)
+    {
+        // Animator 확보
+        Animator animator = newObj.GetComponent<Animator>();
+
+        firePosition = newObj.Find("FirePosition");
+        aiming = firePosition.GetComponent<Aiming>();
+        aiming.SetFirePoint(firePosition);
+
+        spriteRenderer = newObj.GetComponentInChildren<SpriteRenderer>();
+
+        animationHandler.RefreshAnimator(animator);
+        particleSystemHandler.EffectReset(firePosition);
+    }
+
+    public void OnPistolHanded()
+    {
+        weapon.HandleWeaponSelectInput(WeaponType.Pistol);
+    }
+    public void OnRifleHanded()
+    {
+        weapon.HandleWeaponSelectInput(WeaponType.Rifle);
+    }
+    public void OnShotgunHanded()
+    {
+        weapon.HandleWeaponSelectInput(WeaponType.Shotgun);
     }
 }

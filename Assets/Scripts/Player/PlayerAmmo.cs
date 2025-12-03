@@ -34,7 +34,7 @@ public class PlayerAmmo : MonoBehaviour
     [Tooltip("현재 샷건 비축 탄약 수")]
     public int shotgunReserveCurrent = 24;
 
-    // 보급 상자에서 사용할 "풀 충전" 함수
+    // 보급 상자에서 사용할 풀 충전 함수
     // 라이플 / 샷건의 탄창 + 비축탄을 모두 최대치로 채움
     public void RefillAllAmmo()
     {
