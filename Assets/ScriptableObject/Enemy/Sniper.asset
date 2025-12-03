@@ -22,7 +22,7 @@ MonoBehaviour:
   detectRange: 30
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8388672
   attackRange: 30
   patrolType: 2
   patrolDistance: 4
