@@ -484,7 +484,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632af2c8c0b6f44da6e6cf5dc6c8c80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 187076722}
+  weapon: {fileID: 1572598860}
+  ammo: {fileID: 1572598861}
 --- !u!1 &296248186
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,7 +842,6 @@ GameObject:
   m_Component:
   - component: {fileID: 370999507}
   - component: {fileID: 370999508}
-  - component: {fileID: 370999510}
   m_Layer: 5
   m_Name: Gun UI
   m_TagString: Untagged
@@ -884,22 +884,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunNameText: {fileID: 820768263}
   ammoText: {fileID: 1875530403}
---- !u!114 &370999510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 370999506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a71bdf9ae8ba804797a79e6a7257450, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gunName: Rifle
-  magazineSize: 30
-  currentMagazine: 30
-  reserveAmmo: 70
 --- !u!1001 &433406850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2556,7 +2540,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1163361494
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3366,6 +3350,45 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1457278378}
   m_CullTransparentMesh: 1
+--- !u!1 &1572598857 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5461742223536402192, guid: fcbf9eb0dd2369348ad0504e59e0387c, type: 3}
+  m_PrefabInstance: {fileID: 1763558656}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1572598860 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 178309427300150468, guid: fcbf9eb0dd2369348ad0504e59e0387c, type: 3}
+  m_PrefabInstance: {fileID: 1763558656}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572598857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aae5f9c928e181f43836db0947f58f51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1572598861 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 149640062353188701, guid: fcbf9eb0dd2369348ad0504e59e0387c, type: 3}
+  m_PrefabInstance: {fileID: 1763558656}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572598857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b762f190b53d124bb965930d8e6f3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1572598870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572598857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a71bdf9ae8ba804797a79e6a7257450, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1584709699
 GameObject:
   m_ObjectHideFlags: 0
@@ -3452,6 +3475,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 178309427300150468, guid: fcbf9eb0dd2369348ad0504e59e0387c, type: 3}
+      propertyPath: hasShotgun
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3117428720867497703, guid: fcbf9eb0dd2369348ad0504e59e0387c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3499,7 +3526,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5461742223536402192, guid: fcbf9eb0dd2369348ad0504e59e0387c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1572598870}
   m_SourcePrefab: {fileID: 100100000, guid: fcbf9eb0dd2369348ad0504e59e0387c, type: 3}
 --- !u!1 &1875530401
 GameObject:
@@ -3972,7 +4002,7 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 433406850}
+  - {fileID: 1763558656}
   - {fileID: 796441468}
   - {fileID: 1275681218}
-  - {fileID: 1763558656}
-  - {fileID: 433406850}
