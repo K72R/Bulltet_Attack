@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-// 01_Scripts/Object/Weapon/WeaponPickup.cs
-
 using UnityEngine;
 
 // 맵에 떨어진 총 아이템
@@ -53,7 +51,7 @@ public class WeaponPickup : MonoBehaviour
     // 플레이어에게 무기를 해금시키고, 아이템을 제거합니다.
     private void GiveWeaponToPlayer()
     {
-        // 플레이어에 붙어 있을 무기 관리 스크립트를 찾습니다
+        // 플레이어에 붙어 있을 무기 관리 스크립트를 찾아서
         var weaponController = playerTransform.GetComponent<PlayerWeaponController>();
 
         if (weaponController != null)

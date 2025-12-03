@@ -86,13 +86,13 @@ public class SupplyBox : MonoBehaviour
             spriteRenderer.sprite = openedSprite;
         }
 
-        //// 실제 탄약 회복 로직 구현
-        //// 실제 프로젝트 코드에 맞게 수정 필요
-        // var playerAmmo = playerTransform.GetComponent<PlayerAmmo>();
-        // if (playerAmmo != null)
-        // {
-        //     playerAmmo.RefillAllAmmo();
-        // }
+        // 실제 탄약 회복 로직 구현
+        // 실제 프로젝트 코드에 맞게 수정 필요
+        var playerAmmo = playerTransform.GetComponent<PlayerAmmo>();
+        if (playerAmmo != null)
+        {
+            playerAmmo.RefillAllAmmo();
+        }
 
         Debug.Log("보급 상자 사용: 플레이어 탄약 보급 (일단 구현하고 나중에 코드넣어서 세부적으로 나누면됨)");
 
