@@ -39,6 +39,9 @@ public class PlayerController : MonoBehaviour
 
     private Camera cam; // 마우스 커서의 좌표를 얻기 위한 카메라 참조
 
+    private PlayerAmmo playerAmmo;
+    private PlayerWeaponController weaponController;
+
     private void Awake()
     {
         playerPosition = Vector2.zero;
@@ -46,6 +49,9 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         cam = Camera.main;
         particleSystemHandler = GetComponent<ParticleSystemHandler>();
+
+        playerAmmo = GetComponent<PlayerAmmo>();
+        weaponController = GetComponent<PlayerWeaponController>();
     }
 
     private void Start()
@@ -90,13 +96,37 @@ public class PlayerController : MonoBehaviour
     private void HandleCombatInput()
     {
         if(Input.GetMouseButtonDown(0))
-        {
-            if (isAttackable == IsAttackable.Reloading) return; // 재장전 중이면 공격 불가;
+    {
+            if (isAttackable == IsAttackable.Reloading) return;
 
-            particleSystemHandler.FireEffectsOn(); // 총구 화염 효과 재생
-            animationHandler.Shoot(); // 공격 애니메이션 재생
-            aiming.Attack(); // 공격된 오브젝트 피격처리
+            //탄약 시스템 연결 구간
+            WeaponType currentWeapon = weaponController.currentWeapon;
+
+            // 권총은 무한탄 
+            if (currentWeapon != WeaponType.Pistol)
+            {
+                // 라이플/샷건은 탄약 필요
+                if (!playerAmmo.ConsumeFromMag(currentWeapon.ToString()))
+                {
+                    Debug.Log("R 눌러서 재장전");
+                    return;
+                }
+            }
+
+            // ---- 기존 발사 처리 ----
+            particleSystemHandler.FireEffectsOn();
+            animationHandler.Shoot();
+            aiming.Attack();
         }
+
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    if (isAttackable == IsAttackable.Reloading) return; // 재장전 중이면 공격 불가;
+
+        //    particleSystemHandler.FireEffectsOn(); // 총구 화염 효과 재생
+        //    animationHandler.Shoot(); // 공격 애니메이션 재생
+        //    aiming.Attack(); // 공격된 오브젝트 피격처리
+        //}
     }
 
     /// <summary>
@@ -156,6 +186,14 @@ public class PlayerController : MonoBehaviour
 
     public void ReloadComplete()
     {
+
+        WeaponType currentWeapon = weaponController.currentWeapon;
+
+        if (currentWeapon != WeaponType.Pistol)
+        {
+            playerAmmo.Reload(currentWeapon.ToString());
+        }
+
         Debug.Log("재장전 완료");
         isAttackable = IsAttackable.Ready;
     }
