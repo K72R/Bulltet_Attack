@@ -56,45 +56,18 @@ public class PlayerWeaponController : MonoBehaviour
                 currentWeapon = WeaponType.Pistol;
                 break;
             case WeaponType.Rifle:
+                if (!hasRifle) return;
                 currentWeapon = WeaponType.Rifle;
                 break;
             case WeaponType.Shotgun:
+                if (!hasShotgun) return;
                 currentWeapon = WeaponType.Shotgun;
                 break;
         }
-        //// 1번: 권총 (기본 무기, 항상 사용 가능)
-        //if (Input.GetKeyDown(KeyCode.Alpha1))
-        //{
-        //    
-        //    Debug.Log("무기 변경: 권총");
-        //}
-
-        //// 2번: 라이플 (해금됐을 때만 선택 가능)
-        //if (Input.GetKeyDown(KeyCode.Alpha2) && hasRifle)
-        //{
-        //    
-        //    Debug.Log("무기 변경: 라이플");
-        //}
-
-        //// 3번: 샷건 (해금됐을 때만 선택 가능)
-        //if (Input.GetKeyDown(KeyCode.Alpha3) && hasShotgun)
-        //{
-        //    
-        //    Debug.Log("무기 변경: 샷건");
-        //}
 
         PlayerController controller = GetComponent<PlayerController>();
         controller.SendNewSkin(currentWeapon);
     }
-
-        // 3번: 샷건 (해금됐을 때만 선택 가능)
-        if (Input.GetKeyDown(KeyCode.Alpha3) && hasShotgun)
-        {
-            currentWeapon = WeaponType.Shotgun;
-            Debug.Log("무기 변경: 샷건");
-        }
-    }
-
     public int GetCurrentWeaponDamage()
     {
         switch (currentWeapon)
