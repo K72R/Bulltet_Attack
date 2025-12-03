@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
 using UnityEngine;
 
-// 플레이어가 근처에서 상호작용(F키)을 눌러
+// 플레이어가 근처에서 상호작용(E키)을 눌러
 // 문을 열고 닫을 수 있게 해 주는 스크립트
 // - 닫힘 상태: 콜라이더 ON → 통과 불가
 // - 열림 상태: 콜라이더 OFF → 통과 가능

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 플레이어가 몸으로 밀어서 움직일 수 있는 엄폐물.
+// 플레이어가 몸으로 밀어서 움직일 수 있는 엄폐물
 // 리지드바디 물리에 의해 움직임
 // 필요하면 X 또는 Y 축으로만 움직이게 제한 가능
 [RequireComponent(typeof(Rigidbody2D))]
