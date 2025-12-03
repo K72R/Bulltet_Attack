@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 4838523549829310716}
   - component: {fileID: 2340236811109311100}
   - component: {fileID: 1854300964543439310}
+  - component: {fileID: 149640062353188701}
+  - component: {fileID: 178309427300150468}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -247,6 +249,41 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.6321182, y: 1.7293587}
   m_EdgeRadius: 0
+--- !u!114 &149640062353188701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5461742223536402192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b762f190b53d124bb965930d8e6f3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rifleMagMax: 30
+  rifleMagCurrent: 30
+  rifleReserveMax: 90
+  rifleReserveCurrent: 90
+  shotgunMagMax: 6
+  shotgunMagCurrent: 6
+  shotgunReserveMax: 24
+  shotgunReserveCurrent: 24
+--- !u!114 &178309427300150468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5461742223536402192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aae5f9c928e181f43836db0947f58f51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasRifle: 0
+  hasShotgun: 0
+  currentWeapon: 0
 --- !u!1 &5589888764227121240
 GameObject:
   m_ObjectHideFlags: 0
