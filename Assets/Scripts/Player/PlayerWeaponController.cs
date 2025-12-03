@@ -74,4 +74,15 @@ public class PlayerWeaponController : MonoBehaviour
             Debug.Log("무기 변경: 샷건");
         }
     }
+
+    public int GetCurrentWeaponDamage()
+    {
+        switch (currentWeapon)
+        {
+            case WeaponType.Pistol: return 5;
+            case WeaponType.Rifle: return 10;
+            case WeaponType.Shotgun: return 30;
+        }
+        return 0;
+    }
 }
