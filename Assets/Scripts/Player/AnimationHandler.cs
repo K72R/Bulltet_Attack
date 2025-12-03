@@ -14,7 +14,9 @@ public class AnimationHandler : MonoBehaviour
 
     public void Move(Vector2 direction)
     {
-        if(direction != Vector2.zero)
+        if (animator == null) return;
+
+        if (direction != Vector2.zero)
         {
             animator.SetBool("Move", true);
         }
@@ -26,11 +28,20 @@ public class AnimationHandler : MonoBehaviour
 
     public void Shoot()
     {
+        if (animator == null) return;
+
         animator.SetTrigger("Attack");
     }
 
     public void Reload()
     {
+        if (animator == null) return;
+
         animator.SetTrigger("Reload");
+    }
+
+    public void RefreshAnimator(Animator newAnimator)
+    {
+        animator = newAnimator;
     }
 }

@@ -24,6 +24,13 @@ public class Aiming : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        RayDistance();
+    }
+
+    private void RayDistance()
+    {
+        if (firePosition == null) return;
+
         aimingLine.SetPosition(0, firePosition.position + transform.up * objAndRayOffset);
 
         RaycastHit2D hit = Physics2D.Raycast(firePosition.position, transform.up, rayLength);
@@ -41,6 +48,8 @@ public class Aiming : MonoBehaviour
 
     public void Attack()
     {
+        if (firePosition == null) return;
+
         RaycastHit2D hit = Physics2D.Raycast(firePosition.position, transform.up, rayLength);
 
         if (hit.collider != null)
@@ -59,5 +68,9 @@ public class Aiming : MonoBehaviour
         {
             Debug.Log("Miss");
         }
+    }
+    public void SetFirePoint(Transform newFirePoint)
+    {
+        firePosition = newFirePoint;
     }
 }
