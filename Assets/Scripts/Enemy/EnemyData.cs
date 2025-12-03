@@ -46,5 +46,10 @@ public class EnemyData : ScriptableObject
     public float bulletSpeed = 10f; // 총알 속도
     public Sprite bulletSprite; // 총알 이미지
     public GameObject bulletPrefab; // 총알 프리팹
+
+    [Header("저격수 전용 세팅")]
+    public bool isSniper = false; // 저격수만 체크하여 사용
+    public float aimTime = 1.5f; // 조준 시간
+    public Color laserColor = Color.red; // 레이저 색깔
 }
 

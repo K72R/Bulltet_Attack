@@ -13,9 +13,24 @@ public class EnemyController : MonoBehaviour
 
     private float attackCooldown = 2.5f; // 초기 공격 쿨타임 설정
 
+    private LineRenderer laser;
+    private bool isAiming = false;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform; // 플레이어 오브젝트를 태그로 찾기 (플레이어 인스펙터에서 태그 설정 필요)
+
+        if (enemy.data.isSniper)
+        {
+            laser = gameObject.AddComponent<LineRenderer>();
+            laser.startWidth = 0.05f;
+            laser.endWidth = 0.05f;
+            laser.enabled = false;
+
+            laser.material = new Material(Shader.Find("Sprites/Default"));
+            laser.startColor = enemy.data.laserColor;
+            laser.endColor = enemy.data.laserColor;
+        }
 
         patrolCenter = transform.position; // 현재 위치를 패트롤 가운데로 설정
 
@@ -63,9 +78,15 @@ public class EnemyController : MonoBehaviour
 
         Vector3 bulletDir = (player.position - transform.position).normalized;
 
-        FireBullet(bulletDir);
-
-        // TODO: 플레이어에게 데미지 주기
+        if (enemy.data.isSniper)
+        {
+            if (!isAiming)
+                StartCoroutine(SniperAimAndFire());
+        }
+        else
+        {
+            FireBullet(bulletDir);
+        }
 
         attackCooldown = enemy.data.attackRate; // 공격 쿨타임 초기화
     }
@@ -177,5 +198,32 @@ public class EnemyController : MonoBehaviour
         Bullet bullet = bulletObj.GetComponent<Bullet>();
 
         bullet.Initialize(dir, enemy.data.bulletSpeed, enemy.data.attackDamage, enemy.data.bulletSprite); // 총알 초기화
+    }
+
+    private IEnumerator SniperAimAndFire()
+    {
+        isAiming = true;
+        laser.enabled = true;
+
+        float timer = 0f;
+
+        while (timer < enemy.data.aimTime)
+        {
+            Vector3 dir = (player.position - transform.position).normalized;
+
+            // 레이저를 플레이어 방향으로 표시
+            laser.SetPosition(0, transform.position);
+            laser.SetPosition(1, transform.position + dir * enemy.data.detectRange);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // 레이저 끄고 발사
+        laser.enabled = false;
+
+        FireBullet((player.position - transform.position).normalized);
+
+        isAiming = false;
     }
 }
