@@ -2,17 +2,41 @@ using UnityEngine;
 
 public class SelectUI : MonoBehaviour
 {
-    public GameObject panel;
+    public PlayerWeaponController weapon;
+    public PlayerAmmo ammo;
 
     public void SelectRifle()
     {
-        GunUI.Instance.UpdateUI("Rifle", 30, 70);
-        panel.SetActive(false);
+        weapon.hasRifle = true;
+        weapon.currentWeapon = WeaponType.Rifle;
+
+        ammo.rifleMagCurrent = ammo.rifleMagMax;
+        ammo.rifleReserveCurrent = ammo.rifleReserveMax;
+
+        //  UI 즉시 갱신
+        GunUI.Instance.UpdateUI(
+            "Rifle",
+            ammo.rifleMagCurrent,
+            ammo.rifleReserveCurrent
+        );
+
+        gameObject.SetActive(false);
     }
 
     public void SelectShotgun()
     {
-        GunUI.Instance.UpdateUI("Shot gun", 6, 24);
-        panel.SetActive(false);
+        weapon.hasShotgun = true;
+        weapon.currentWeapon = WeaponType.Shotgun;
+
+        ammo.shotgunMagCurrent = ammo.shotgunMagMax;
+        ammo.shotgunReserveCurrent = ammo.shotgunReserveMax;
+
+        GunUI.Instance.UpdateUI(
+           "Shotgun",
+           ammo.shotgunMagCurrent,
+           ammo.shotgunReserveCurrent
+       );
+
+        gameObject.SetActive(false);
     }
 }
