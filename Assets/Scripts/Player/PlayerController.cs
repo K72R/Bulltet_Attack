@@ -101,8 +101,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleCombatInput()
     {
-        if(Input.GetMouseButtonDown(0))
-    {
+        if (Input.GetMouseButtonDown(0))
+        {
             if (isAttackable == IsAttackable.Reloading) return;
 
             //탄약 시스템 연결 구간
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
                 // 라이플/샷건은 탄약 필요
                 if (!playerAmmo.ConsumeFromMag(currentWeapon.ToString()))
                 {
-                    Debug.Log("R 눌러서 재장전");
+                    OnReload();
                     return;
                 }
             }
@@ -126,6 +126,7 @@ public class PlayerController : MonoBehaviour
             animationHandler.Shoot();
             aiming.Attack(damage);
         }
+    }
 
     /// <summary>
     /// 플레이어 회전
@@ -166,7 +167,7 @@ public class PlayerController : MonoBehaviour
         firePosition.localPosition = new Vector3(firePosition.localPosition.x, isLeftHanded ? ROTATION_HANDS_OFFSET : - ROTATION_HANDS_OFFSET, firePosition.localPosition.z);
     }
 
-    public void OnReloadKeyPressed()
+    public void OnReload()
     {
         if(isAttackable == IsAttackable.Reloading) return; // 이미 재장전 중이면 무시
 
