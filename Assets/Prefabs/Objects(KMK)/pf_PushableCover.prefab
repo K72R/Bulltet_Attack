@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4766549716130988792}
   m_Layer: 6
   m_Name: pf_PushableCover
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -195,13 +195,13 @@ MonoBehaviour:
   m_SelfShadows: 0
   m_ApplyToSortingLayers: 0000000029177034fb842fc2
   m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  m_ShapePathHash: 0
+  - {x: -0.18656965, y: -0.18509515, z: 0}
+  - {x: -0.18646967, y: 0.18201734, z: 0}
+  - {x: 0.18519685, y: 0.1827218, z: 0}
+  - {x: 0.18543145, y: -0.18509579, z: 0}
+  m_ShapePathHash: -2071877390
   m_Mesh: {fileID: 0}
-  m_InstanceId: -889962
+  m_InstanceId: -945256
   m_LocalBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.5, y: 0.5, z: 0}
+    m_Center: {x: -0.00056909025, y: -0.0011869967, z: 0}
+    m_Extent: {x: 0.18600056, y: 0.18390879, z: 0}
