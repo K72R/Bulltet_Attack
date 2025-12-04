@@ -5,10 +5,15 @@ public class SelectUI : MonoBehaviour
     public PlayerWeaponController weapon;
     public PlayerAmmo ammo;
 
+    private void OnEnable()
+    {
+        Time.timeScale = 0f;
+    }
+
     public void SelectRifle()
     {
-        weapon.hasRifle = true;
-        weapon.currentWeapon = WeaponType.Rifle;
+        weapon.UnlockWeapon(WeaponType.Rifle); weapon.currentWeapon = WeaponType.Rifle;
+        weapon.HandleWeaponSelectInput(WeaponType.Rifle);
 
         ammo.rifleMagCurrent = ammo.rifleMagMax;
         ammo.rifleReserveCurrent = ammo.rifleReserveMax;
@@ -20,13 +25,13 @@ public class SelectUI : MonoBehaviour
             ammo.rifleReserveCurrent
         );
 
-        gameObject.SetActive(false);
+        ClosePanel();
     }
 
     public void SelectShotgun()
     {
-        weapon.hasShotgun = true;
-        weapon.currentWeapon = WeaponType.Shotgun;
+        weapon.UnlockWeapon(WeaponType.Shotgun); weapon.currentWeapon = WeaponType.Shotgun;
+        weapon.HandleWeaponSelectInput(WeaponType.Shotgun);
 
         ammo.shotgunMagCurrent = ammo.shotgunMagMax;
         ammo.shotgunReserveCurrent = ammo.shotgunReserveMax;
@@ -37,6 +42,13 @@ public class SelectUI : MonoBehaviour
            ammo.shotgunReserveCurrent
        );
 
+        ClosePanel();
+    }
+
+    private void ClosePanel()
+    {
+        Time.timeScale = 1f;
+        Cursor.visible = false;
         gameObject.SetActive(false);
     }
 }

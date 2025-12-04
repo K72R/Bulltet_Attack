@@ -9,7 +9,7 @@ public class Aiming : MonoBehaviour
     [Header("Aiming Settings")]
     private Transform firePosition;
     private LineRenderer aimingLine;
-    private float damage;
+    private Vector3 rayStart;
 
     public float objAndRayOffset;
     public float rayLength;
@@ -31,12 +31,13 @@ public class Aiming : MonoBehaviour
     {
         if (firePosition == null) return;
 
-        aimingLine.SetPosition(0, firePosition.position + transform.up * objAndRayOffset);
+        rayStart = firePosition.position + transform.up * objAndRayOffset;
+        aimingLine.SetPosition(0, rayStart);
 
-        RaycastHit2D hit = Physics2D.Raycast(firePosition.position, transform.up, rayLength);
+        RaycastHit2D hit = Physics2D.Raycast(rayStart, transform.up, rayLength);
         Vector3 endPosition = transform.position + transform.up * rayLength;
 
-        if (hit.collider != null)
+        if (hit.collider != null && !hit.collider.TryGetComponent<Player>(out Player player))
         {
             aimingLine.SetPosition(1, hit.point);
         }
@@ -44,13 +45,15 @@ public class Aiming : MonoBehaviour
         {
             aimingLine.SetPosition(1, endPosition);
         }
+
+        
     }
 
-    public void Attack()
+    public void Attack(int damage)
     {
-        if (firePosition == null) return;
+        if (firePosition == null || rayStart == null) return;
 
-        RaycastHit2D hit = Physics2D.Raycast(firePosition.position, transform.up, rayLength);
+        RaycastHit2D hit = Physics2D.Raycast(rayStart, transform.up, rayLength);
 
         if (hit.collider != null)
         {
