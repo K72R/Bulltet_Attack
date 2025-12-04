@@ -7,12 +7,22 @@ public class GunUITest : MonoBehaviour
 
     private float reloadDelay = 0.0f;   // 장전 대기 시간(애니메이션 시간)
 
+    // 최근 상태 캐시 (변화가 있을 때만 UI 갱신)
+    private string lastWeapon = "";
+    private int lastMag = -1;
+    private int lastReserve = -1;
+
     private void Start()
     {
         ammo = GetComponent<PlayerAmmo>();
         weapon = GetComponent<PlayerWeaponController>();
 
-        UpdateUI();
+        if (ammo == null || weapon == null)
+        {
+            return;
+        }
+
+        RefreshUIImmediate();
     }
 
     private void Update()
@@ -22,16 +32,10 @@ public class GunUITest : MonoBehaviour
             Input.GetKeyDown(KeyCode.Alpha2) ||
             Input.GetKeyDown(KeyCode.Alpha3))
         {
-            UpdateUI();
+            RefreshUIImmediate();
         }
 
-        // 발사 시 탄약 UI 갱신 (실제 발사 스크립트에서 ConsumeFromMag 호출한다고 가정)
-        if (Input.GetMouseButtonDown(0))
-        {
-            TryFire();
-        }
-
-        // R 키 → 장전 시작
+        // 장전 시작
         if (Input.GetKeyDown(KeyCode.R))
         {
             StartReload();
@@ -40,65 +44,85 @@ public class GunUITest : MonoBehaviour
         // 장전 대기 시간이 끝났다면 실제 장전 적용
         if (reloadDelay > 0f)
         {
-            reloadDelay -= Time.deltaTime;
-
+            reloadDelay -= Time.unscaledDeltaTime;
             if (reloadDelay <= 0f)
             {
                 ApplyReload();
             }
         }
+
+        HandleAutoSwitch();
+
+        PollAndRefreshUI();
     }
 
-    // 발사 처리
-    private void TryFire()
+    private void PollAndRefreshUI()
     {
+        if (weapon == null || ammo == null) return;
+
         string w = weapon.currentWeapon.ToString();
+        int mag = 0;
+        int reserve = 0;
 
         if (w == "Pistol")
         {
-            // 권총은 무한탄
-            GunUI.Instance.UpdateUI("Pistol", 999, 999);
-            return;
+            mag = 999; reserve = 999;
         }
-
-        bool ok = ammo.ConsumeFromMag(w);
-
-        if (!ok)
+        else if (w == "Rifle")
         {
-            Debug.Log("탄창 비었음 → 장전 필요");
-            return;
+            mag = ammo.rifleMagCurrent;
+            reserve = ammo.rifleReserveCurrent;
+        }
+        else if (w == "Shotgun")
+        {
+            mag = ammo.shotgunMagCurrent;
+            reserve = ammo.shotgunReserveCurrent;
         }
 
-        UpdateUI();
+        if (w != lastWeapon || mag != lastMag || reserve != lastReserve)
+        {
+            GunUI.Instance.UpdateUI(w, mag, reserve);
+            lastWeapon = w;
+            lastMag = mag;
+            lastReserve = reserve;
+        }
+    }
 
-        // 탄약 0인데 예비탄도 0 → 자동 권총 변경
-        HandleAutoSwitch();
+    // 즉시 UI 강제 갱신
+    private void RefreshUIImmediate()
+    {
+        lastWeapon = "";
+        lastMag = -1;
+        lastReserve = -1;
+        PollAndRefreshUI();
     }
 
     // 장전
     private void StartReload()
     {
-        string w = weapon.currentWeapon.ToString();
+        string w = weapon != null ? weapon.currentWeapon.ToString() : "Pistol";
 
         if (w == "Pistol") return;
 
-        Debug.Log("장전 애니메이션 재생");
-        reloadDelay = 1.0f; // 여기에 실제 재장전 애니메이션 길이 넣으면 됨
+        reloadDelay = 1.0f;
     }
 
     private void ApplyReload()
     {
+        if (weapon == null || ammo == null) return;
+
         string w = weapon.currentWeapon.ToString();
 
         ammo.Reload(w);
 
-        Debug.Log("장전 완료");
-        UpdateUI();
+        RefreshUIImmediate();
     }
 
-    // 탄약 0 → 권총 자동 변경
+    // 권총 자동 변경
     private void HandleAutoSwitch()
     {
+        if (weapon == null || ammo == null) return;
+
         string w = weapon.currentWeapon.ToString();
 
         if (w == "Pistol") return;
@@ -121,29 +145,7 @@ public class GunUITest : MonoBehaviour
         if (mag <= 0 && reserve <= 0)
         {
             weapon.currentWeapon = WeaponType.Pistol;
-
-            // 무한탄 UI: 탄창 12, 보유 무한
             GunUI.Instance.UpdateUI("Pistol", 999, 999);
-            Debug.Log("탄약 없음 → 권총으로 자동 전환");
-        }
-    }
-
-    // UI 업데이트
-    private void UpdateUI()
-    {
-        string w = weapon.currentWeapon.ToString();
-
-        if (w == "Pistol")
-        {
-            GunUI.Instance.UpdateUI("Pistol", 999, 999);
-        }
-        else if (w == "Rifle")
-        {
-            GunUI.Instance.UpdateUI("Rifle", ammo.rifleMagCurrent, ammo.rifleReserveCurrent);
-        }
-        else if (w == "Shotgun")
-        {
-            GunUI.Instance.UpdateUI("Shotgun", ammo.shotgunMagCurrent, ammo.shotgunReserveCurrent);
         }
     }
 }
