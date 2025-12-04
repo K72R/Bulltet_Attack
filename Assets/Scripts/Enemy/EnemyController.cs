@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class EnemyController : MonoBehaviour
 {
@@ -146,14 +147,10 @@ public class EnemyController : MonoBehaviour
             return false;
 
 
-        if (enemy.data.obstacleMask != 0) // 장애물 마스크가 설정되어 있을 경우에만 레이캐스트 검사
-        {
-            if (Physics.Raycast(transform.position, dirToPlayer, out RaycastHit hit, enemy.data.detectRange, enemy.data.obstacleMask)) // 장애물 마스크로 레이캐스트 검사
-            {
-                if (!hit.collider.CompareTag("Player")) // 레이캐스트에 맞은 것이 플레이어가 아니면 false 반환
-                    return false;
-            }
-        }
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToPlayer, enemy.data.detectRange, enemy.data.obstacleMask);
+
+        if (hit.collider != null && !hit.collider.CompareTag("Player"))
+            return false;
 
         return true;
     }
