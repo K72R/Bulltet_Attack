@@ -12,8 +12,8 @@ public class SelectUI : MonoBehaviour
 
     public void SelectRifle()
     {
-        weapon.hasRifle = true;
-        weapon.currentWeapon = WeaponType.Rifle;
+        weapon.UnlockWeapon(WeaponType.Rifle); weapon.currentWeapon = WeaponType.Rifle;
+        weapon.HandleWeaponSelectInput(WeaponType.Rifle);
 
         ammo.rifleMagCurrent = ammo.rifleMagMax;
         ammo.rifleReserveCurrent = ammo.rifleReserveMax;
@@ -30,8 +30,8 @@ public class SelectUI : MonoBehaviour
 
     public void SelectShotgun()
     {
-        weapon.hasShotgun = true;
-        weapon.currentWeapon = WeaponType.Shotgun;
+        weapon.UnlockWeapon(WeaponType.Shotgun); weapon.currentWeapon = WeaponType.Shotgun;
+        weapon.HandleWeaponSelectInput(WeaponType.Shotgun);
 
         ammo.shotgunMagCurrent = ammo.shotgunMagMax;
         ammo.shotgunReserveCurrent = ammo.shotgunReserveMax;
