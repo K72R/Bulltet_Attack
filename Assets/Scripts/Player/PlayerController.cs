@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     [Header("SystemControll")]
     private AnimationHandler animationHandler; // 애니메이션 핸들러
     private ParticleSystemHandler particleSystemHandler; // 파티클 시스템 핸들러
+    private AudioSourceHandler audioSourceHandler;
 
     [Header("PlayerPosition")]
     public Vector2 playerPosition; // 플레이어의 실시간 위치
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
     {
         playerPosition = Vector2.zero;
         animationHandler = GetComponent<AnimationHandler>();
+        audioSourceHandler = GetComponent<AudioSourceHandler>();
         weapon = GetComponent<PlayerWeaponController>();
         rb = GetComponent<Rigidbody2D>();
         cam = Camera.main;
@@ -101,8 +103,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleCombatInput()
     {
-        if(Input.GetMouseButtonDown(0))
-    {
+        if (Input.GetMouseButtonDown(0))
+        {
             if (isAttackable == IsAttackable.Reloading) return;
 
             //탄약 시스템 연결 구간
@@ -114,25 +116,19 @@ public class PlayerController : MonoBehaviour
                 // 라이플/샷건은 탄약 필요
                 if (!playerAmmo.ConsumeFromMag(currentWeapon.ToString()))
                 {
-                    Debug.Log("R 눌러서 재장전");
+                    OnReload();
                     return;
                 }
             }
 
+            int damage = weapon.GetCurrentWeaponDamage();
+
             // ---- 기존 발사 처리 ----
             particleSystemHandler.FireEffectsOn();
+            audioSourceHandler.ShootSound();
             animationHandler.Shoot();
-            aiming.Attack();
+            aiming.Attack(damage);
         }
-
-        //if(Input.GetMouseButtonDown(0))
-        //{
-        //    if (isAttackable == IsAttackable.Reloading) return; // 재장전 중이면 공격 불가;
-
-        //    particleSystemHandler.FireEffectsOn(); // 총구 화염 효과 재생
-        //    animationHandler.Shoot(); // 공격 애니메이션 재생
-        //    aiming.Attack(); // 공격된 오브젝트 피격처리
-        //}
     }
 
     /// <summary>
@@ -174,11 +170,12 @@ public class PlayerController : MonoBehaviour
         firePosition.localPosition = new Vector3(firePosition.localPosition.x, isLeftHanded ? ROTATION_HANDS_OFFSET : - ROTATION_HANDS_OFFSET, firePosition.localPosition.z);
     }
 
-    public void OnReloadKeyPressed()
+    public void OnReload()
     {
         if(isAttackable == IsAttackable.Reloading) return; // 이미 재장전 중이면 무시
 
         isAttackable = IsAttackable.Reloading; // 재장전 상태로 변경
+        audioSourceHandler.ReloadSound();
         animationHandler.Reload(); // 재장전 애니메이션 설정
     }
 
@@ -229,8 +226,7 @@ public class PlayerController : MonoBehaviour
         RefreshPlayerChildReferences(newSkin.transform);
 
         // 3) 마지막에 기존 스킨 삭제
-        Transform oldSkin = transform.Find("PlayerObj (old)"); // 이렇게 하면 안전
-                                                               // 또는 Destroy 전에 이름을 바꿔두기
+        Transform oldSkin = transform.Find("PlayerObj (old)"); // Destroy 전에 이름을 변경하여 null 방지
 
         // 만약 이름 변경이 번거로우면:
         foreach (Transform child in transform)
@@ -244,6 +240,7 @@ public class PlayerController : MonoBehaviour
     {
         // Animator 확보
         Animator animator = newObj.GetComponent<Animator>();
+        SoundEffect sound = newObj.GetComponent<SoundEffect>();
 
         firePosition = newObj.Find("FirePosition");
         aiming = firePosition.GetComponent<Aiming>();
@@ -252,6 +249,8 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = newObj.GetComponentInChildren<SpriteRenderer>();
 
         animationHandler.RefreshAnimator(animator);
+        audioSourceHandler.ResetCurrentSound(sound);
+
         particleSystemHandler.EffectReset(firePosition);
     }
 
