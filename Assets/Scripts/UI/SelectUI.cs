@@ -5,6 +5,11 @@ public class SelectUI : MonoBehaviour
     public PlayerWeaponController weapon;
     public PlayerAmmo ammo;
 
+    private void OnEnable()
+    {
+        Time.timeScale = 0f;
+    }
+
     public void SelectRifle()
     {
         weapon.hasRifle = true;
@@ -20,7 +25,7 @@ public class SelectUI : MonoBehaviour
             ammo.rifleReserveCurrent
         );
 
-        gameObject.SetActive(false);
+        ClosePanel();
     }
 
     public void SelectShotgun()
@@ -37,6 +42,13 @@ public class SelectUI : MonoBehaviour
            ammo.shotgunReserveCurrent
        );
 
+        ClosePanel();
+    }
+
+    private void ClosePanel()
+    {
+        Time.timeScale = 1f;
+        Cursor.visible = false;
         gameObject.SetActive(false);
     }
 }
