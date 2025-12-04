@@ -99,11 +99,27 @@ public class PlayerController : MonoBehaviour
         {
             if (isAttackable == IsAttackable.Reloading) return; // 재장전 중이면 공격 불가;
 
-            particleSystemHandler.FireEffectsOn(); // 총구 화염 효과 재생
-            animationHandler.Shoot(); // 공격 애니메이션 재생
-            aiming.Attack(); // 공격된 오브젝트 피격처리
+            //탄약 시스템 연결 구간
+            WeaponType currentWeapon = weaponController.currentWeapon;
+
+            // 권총은 무한탄 
+            if (currentWeapon != WeaponType.Pistol)
+            {
+                // 라이플/샷건은 탄약 필요
+                if (!playerAmmo.ConsumeFromMag(currentWeapon.ToString()))
+                {
+                    Debug.Log("R 눌러서 재장전");
+                    return;
+                }
+            }
+
+            int damage = weapon.GetCurrentWeaponDamage();
+
+            // ---- 기존 발사 처리 ----
+            particleSystemHandler.FireEffectsOn();
+            animationHandler.Shoot();
+            aiming.Attack(damage);
         }
-    }
 
     /// <summary>
     /// 플레이어 회전
