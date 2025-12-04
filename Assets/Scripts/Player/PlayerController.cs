@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     [Header("SystemControll")]
     private AnimationHandler animationHandler; // 애니메이션 핸들러
     private ParticleSystemHandler particleSystemHandler; // 파티클 시스템 핸들러
+    private AudioSourceHandler audioSourceHandler;
 
     [Header("PlayerPosition")]
     public Vector2 playerPosition; // 플레이어의 실시간 위치
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
     {
         playerPosition = Vector2.zero;
         animationHandler = GetComponent<AnimationHandler>();
+        audioSourceHandler = GetComponent<AudioSourceHandler>();
         weapon = GetComponent<PlayerWeaponController>();
         rb = GetComponent<Rigidbody2D>();
         cam = Camera.main;
@@ -123,6 +125,7 @@ public class PlayerController : MonoBehaviour
 
             // ---- 기존 발사 처리 ----
             particleSystemHandler.FireEffectsOn();
+            audioSourceHandler.ShootSound();
             animationHandler.Shoot();
             aiming.Attack(damage);
         }
@@ -172,6 +175,7 @@ public class PlayerController : MonoBehaviour
         if(isAttackable == IsAttackable.Reloading) return; // 이미 재장전 중이면 무시
 
         isAttackable = IsAttackable.Reloading; // 재장전 상태로 변경
+        audioSourceHandler.ReloadSound();
         animationHandler.Reload(); // 재장전 애니메이션 설정
     }
 
@@ -222,8 +226,7 @@ public class PlayerController : MonoBehaviour
         RefreshPlayerChildReferences(newSkin.transform);
 
         // 3) 마지막에 기존 스킨 삭제
-        Transform oldSkin = transform.Find("PlayerObj (old)"); // 이렇게 하면 안전
-                                                               // 또는 Destroy 전에 이름을 바꿔두기
+        Transform oldSkin = transform.Find("PlayerObj (old)"); // Destroy 전에 이름을 변경하여 null 방지
 
         // 만약 이름 변경이 번거로우면:
         foreach (Transform child in transform)
@@ -237,6 +240,7 @@ public class PlayerController : MonoBehaviour
     {
         // Animator 확보
         Animator animator = newObj.GetComponent<Animator>();
+        SoundEffect sound = newObj.GetComponent<SoundEffect>();
 
         firePosition = newObj.Find("FirePosition");
         aiming = firePosition.GetComponent<Aiming>();
@@ -245,6 +249,8 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = newObj.GetComponentInChildren<SpriteRenderer>();
 
         animationHandler.RefreshAnimator(animator);
+        audioSourceHandler.ResetCurrentSound(sound);
+
         particleSystemHandler.EffectReset(firePosition);
     }
 
