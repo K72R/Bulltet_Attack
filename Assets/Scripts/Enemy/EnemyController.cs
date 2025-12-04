@@ -13,9 +13,24 @@ public class EnemyController : MonoBehaviour
 
     private float attackCooldown = 2.5f; // 초기 공격 쿨타임 설정
 
+    private LineRenderer laser;
+    private bool isAiming = false;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform; // 플레이어 오브젝트를 태그로 찾기 (플레이어 인스펙터에서 태그 설정 필요)
+
+        if (enemy.data.isSniper)
+        {
+            laser = gameObject.AddComponent<LineRenderer>();
+            laser.startWidth = 0.05f;
+            laser.endWidth = 0.05f;
+            laser.enabled = false;
+
+            laser.material = new Material(Shader.Find("Sprites/Default"));
+            laser.startColor = enemy.data.laserColor;
+            laser.endColor = enemy.data.laserColor;
+        }
 
         patrolCenter = transform.position; // 현재 위치를 패트롤 가운데로 설정
 
@@ -63,9 +78,15 @@ public class EnemyController : MonoBehaviour
 
         Vector3 bulletDir = (player.position - transform.position).normalized;
 
-        FireBullet(bulletDir);
-
-        // TODO: 플레이어에게 데미지 주기
+        if (enemy.data.isSniper)
+        {
+            if (!isAiming)
+                StartCoroutine(SniperAimAndFire());
+        }
+        else
+        {
+            FireBullet(bulletDir);
+        }
 
         attackCooldown = enemy.data.attackRate; // 공격 쿨타임 초기화
     }
@@ -143,7 +164,7 @@ public class EnemyController : MonoBehaviour
 
         Gizmos.color = Color.green;
 
-        // 적의 현재 방향 (transform.up)
+        // 적의 현재 방향
         Vector3 forward = transform.up;
 
         float halfAngle = enemy.data.viewAngle * 0.5f;
@@ -160,22 +181,49 @@ public class EnemyController : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + leftDir * radius);
         Gizmos.DrawLine(transform.position, transform.position + rightDir * radius);
 
-        // 시야 거리 원도 표시 (선택사항)
+        // 시야 거리 원도 표시
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
     private void FireBullet(Vector3 dir) // 총알 발사 함수
     {
-        if (enemy.data.bulletPrefab == null)
+        if (enemy.data.bulletPrefab == null) // 총알 프리팹이 없으면 경고 메시지 출력
         {
             Debug.LogWarning("인스펙터 연결하라고 제발 plz.....");
             return;
         }
 
-        GameObject bulletObj = Instantiate(enemy.data.bulletPrefab, transform.position, Quaternion.identity);
-        Bullet bullet = bulletObj.GetComponent<Bullet>();
+        GameObject bulletObj = Instantiate(enemy.data.bulletPrefab, transform.position, Quaternion.identity); // 총알 프리팹 생성
+        Bullet bullet = bulletObj.GetComponent<Bullet>(); // 총알 컴포넌트 가져오기
 
         bullet.Initialize(dir, enemy.data.bulletSpeed, enemy.data.attackDamage, enemy.data.bulletSprite); // 총알 초기화
+    }
+
+    private IEnumerator SniperAimAndFire() // 스나이퍼 조준 및 발사 코루틴
+    {
+        isAiming = true;
+        laser.enabled = true;
+
+        float timer = 0f;
+
+        while (timer < enemy.data.aimTime)
+        {
+            Vector3 dir = (player.position - transform.position).normalized;
+
+            // 레이저를 플레이어 방향으로 표시
+            laser.SetPosition(0, transform.position);
+            laser.SetPosition(1, transform.position + dir * enemy.data.detectRange);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // 레이저 끄고 발사
+        laser.enabled = false;
+
+        FireBullet((player.position - transform.position).normalized);
+
+        isAiming = false;
     }
 }
