@@ -52,11 +52,12 @@ public float aimTime;
 public Color laserColor;
 ```
 
-🔫 무기 시스템
-무기	탄창	예비탄	특성
-Pistol	무제한	X	기본 시작 무기
-Rifle	30	90	중거리 지속 사격
-Shotgun	6	24	근거리 고화력
+## 🔫 무기 시스템
+| 무기 | 탄창 | 예비탄 | 특성 |
+|------|------|------|------|
+| Pistol | 무제한 |	X |	기본 시작 무기 |
+| Rifle | 30 | 90 |	중거리 지속 사격 |
+| Shotgun | 6 | 24 | 근거리 고화력 |
 
 탄약 시스템 완료
 
@@ -64,36 +65,41 @@ Reload 애니메이션 + 사운드 적용
 
 Raycast 기반 피격 판정
 
-🧱 오브젝트 상호작용
-오브젝트	기능 설명
-Door	E키로 열고 닫기, 빛/시야 차단
-Pushable Cover	플레이어가 밀 수 있는 엄폐물
-Supply Box	탄약 보급(재사용 가능 옵션 포함)
-Gun Pickup	무기 해금
 
-🌒 조명 및 시야 시스템
-요소	적용 설명
-Light2D Spot	플레이어 중심 시야
-ShadowCaster2D	벽/문이 시야 차단
-Raycast	Enemy 인식 판정
-Occlusion	적이 보이는 순간 적 조명 활성화
+## 🧱 오브젝트 상호작용
+| 오브젝트 | 기능 설명 |
+|------|------|
+| Door | E키로 열고 닫기 | 빛/시야 차단 |
+| Pushable Cover | 플레이어가 밀 수 있는 엄폐물 |
+| Supply Box | 탄약 보급(재사용 가능 옵션 포함) |
+| Gun Pickup | 무기 해금 |
 
-🔧 기술 스택
-항목	내용
-Engine	Unity 2022.3.62f2 (URP)
-Physics	Rigidbody2D, Collider2D
-UI	HP Bar, Ammo UI, 시작 UI
-Audio	발사/재장전/피격 효과음
-Code Style	ScriptableObject + Manager 구조
+## 🌒 조명 및 시야 시스템
+| 요소 | 적용 설명 |
+|------|------|
+| Light2D Spot | 플레이어 중심 시야 |
+| ShadowCaster2D | 벽/문이 시야 차단 |
+| Raycast | Enemy 인식 판정 |
+| Occlusion | 적이 보이는 순간 적 조명 활성화 |
 
-👥 팀 구성
-이름	역할
-김경찬 (팀장)	Enemy 개발
-오민근	Player, 사운드
-김문경	오브젝트 & 총기
-백성현	로비 UI & 메인 UI
-장준혁	기획 & 맵
+## 🔧 기술 스택
+| 항목 | 내용 |
+|------|------|
+| Engine | Unity 2022.3.62f2 (URP) |
+| Physics |	Rigidbody2D, Collider2D |
+| UI | HP Bar, Ammo UI, 시작 UI |
+| Audio | 발사/재장전/피격 효과음 |
+| Code Style | ScriptableObject + Manager 구조 |
 
-📌 현재 개발 상태
+## 👥 팀 구성
+| 이름 | 역할 |
+|------|------|
+| 김경찬 (팀장) | Enemy |
+| 오민근 | Player, 사운드 |
+| 김문경 | 오브젝트 & 총기 |
+| 백성현 | 로비 UI & 메인 UI |
+| 장준혁 | 기획 & 맵 |
+
+## 📌 현재 개발 상태
 🚧 Prototype – 기능 검증 단계
 추후 콘텐츠 확장/연출 강화 예정
