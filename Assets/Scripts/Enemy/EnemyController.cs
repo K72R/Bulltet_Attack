@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour
     private Vector3 patrolTarget;
 
     private float attackCooldown = 2.5f; // 초기 공격 쿨타임 설정
-
+    
     private LineRenderer laser;
     private bool isAiming = false;
 
@@ -23,14 +23,14 @@ public class EnemyController : MonoBehaviour
 
         if (enemy.data.isSniper)
         {
-            laser = gameObject.AddComponent<LineRenderer>();
-            laser.startWidth = 0.05f;
-            laser.endWidth = 0.05f;
-            laser.enabled = false;
+            laser = gameObject.AddComponent<LineRenderer>(); // 레이저 라인 렌더러 추가
+            laser.startWidth = 0.05f; // 레이저 시작 두께 설정
+            laser.endWidth = 0.05f; // 레이저 끝 두께 설정
+            laser.enabled = false; // 초기에는 비활성화
 
-            laser.material = new Material(Shader.Find("Sprites/Default"));
-            laser.startColor = enemy.data.laserColor;
-            laser.endColor = enemy.data.laserColor;
+            laser.material = new Material(Shader.Find("Sprites/Default")); // 레이저 재질 설정
+            laser.startColor = enemy.data.laserColor; // 레이저 시작 색상 설정
+            laser.endColor = enemy.data.laserColor; // 레이저 끝 색상 설정
         }
 
         patrolCenter = transform.position; // 현재 위치를 패트롤 가운데로 설정
@@ -77,16 +77,16 @@ public class EnemyController : MonoBehaviour
     {
         if (attackCooldown > 0f) return; // 쿨타임이 남아있으면 공격 불가
 
-        Vector3 bulletDir = (player.position - transform.position).normalized;
+        Vector3 bulletDir = (player.position - transform.position).normalized; // 총알 발사 방향 계산
 
-        if (enemy.data.isSniper)
+        if (enemy.data.isSniper) // 스나이퍼 타입일 경우
         {
-            if (!isAiming)
-                StartCoroutine(SniperAimAndFire());
+            if (!isAiming) // 이미 조준 중이 아니면
+                StartCoroutine(SniperAimAndFire()); // 레이저 조준 및 발사 코루틴 시작
         }
-        else
+        else // 일반 적 타입일 경우
         {
-            FireBullet(bulletDir);
+            FireBullet(bulletDir); // 총알 발사
         }
 
         attackCooldown = enemy.data.attackRate; // 공격 쿨타임 초기화
